@@ -1,6 +1,7 @@
 import 'package:image_hasher_dart/exceptions/hash_incompatibility_exception.dart';
 import 'package:image_hasher_dart/models/image_hash.dart';
 
+/// Helper class allowing comparison of two hashes
 abstract class HashComparisonUtils {
   /// Compares hashes and returns similarity percentage
   static double compareHashes(final ImageHash a, final ImageHash b) {
@@ -25,13 +26,16 @@ abstract class HashComparisonUtils {
     return percentage;
   }
 
-  /// Compares hashes until [threshold] mismatch is exceeded
+  /// Compares hashes until [threshold] mismatch is exceeded.
+  /// Used for fast comparison.
   static bool areIdentical(
     ImageHash a,
     ImageHash b,
     double threshold,
   ) {
-    if (a.length != b.length) {
+    if (a.depth != b.depth ||
+        a.length != b.length ||
+        a.resolution != b.resolution) {
       throw const HashIncompatibilityException(
         message: 'Hash length mismatch',
       );
